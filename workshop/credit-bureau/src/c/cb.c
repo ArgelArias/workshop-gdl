@@ -21,10 +21,14 @@ void doprocessing (int sock)
 
     memset(&(buffer), '0', 256);
     int recvMsgSize;
-    
+
     /* Receive message from client */
     if ((recvMsgSize = recv(sock, buffer, 256, 0)) < 0)
-        perror("ERROR reading to socket");
+        perror("ERROR reading to socket1");
+
+    if(buffer[10] == '0')
+        searchrfc(buffer, sock);
+
 
     /* Send received string and receive again until end of transmission */
     while (recvMsgSize > 0)      /* zero indicates end of transmission */
@@ -35,29 +39,31 @@ void doprocessing (int sock)
 
         /* See if there is more data to receive */
         if ((recvMsgSize = recv(sock, buffer, 256, 0)) < 0)
-            perror("ERROR reading to socket");
+            perror("ERROR reading to socket2");
+
     }
 
+    //printf("%s\n", buffer);
     closesocket(sock);    /* Close client socket */
 }
 
-BOOL initW32() 
+BOOL initW32()
 {
 		WSADATA wsaData;
 		WORD version;
 		int error;
-		
+
 		version = MAKEWORD( 2, 0 );
-		
+
 		error = WSAStartup( version, &wsaData );
-		
+
 		/* check for error */
 		if ( error != 0 )
 		{
 		    /* error occured */
 		    return FALSE;
 		}
-		
+
 		/* check for correct version */
 		if ( LOBYTE( wsaData.wVersion ) != 2 ||
 		     HIBYTE( wsaData.wVersion ) != 0 )
@@ -65,14 +71,45 @@ BOOL initW32()
 		    /* incorrect WinSock version */
 		    WSACleanup();
 		    return FALSE;
-		}	
+		}
+}
+
+searchrfc(char *rfc, int sock){
+    //printf("%s\n", rfc);
+    FILE *fd;
+	int i, j, find=0, contline;
+	char caracter;
+	char line[150];
+	rfc[10] = '\0';
+	//char rfc[10];// = {'2','3','4','5','6','A','B','C','D','E'};
+	//printf("%s\n", rfc);
+	fd = fopen("file.txt", "r");
+	while(!feof(fd)){
+		for(i=0;i<100;i++){
+			line[i] = fgetc(fd);
+			if(line[i] == '\n' || feof(fd)){
+				break;
+				}
+		}
+		char fline[i];
+		for(contline=0;contline<i;contline++){
+			fline[contline] = line[contline];
+		}
+
+        if(strstr(fline, rfc)){
+            printf("%s\n", fline);
+            send(sock,fline,i,0);
+            send(sock,"@",1,0);
+        }
+	}
+	fclose(fd);
 }
 
 int main()
 {
 
-	 initW32(); /* Necesaria para compilar en Windows */ 
-	 	
+	 initW32(); /* Necesaria para compilar en Windows */
+
    int fd, fd2; /* los descriptores de archivos */
 
    /* para la información de la dirección del servidor */
@@ -125,11 +162,13 @@ int main()
       printf("Se obtuvo una conexión desde %s\n", inet_ntoa(client.sin_addr) );
       /* que mostrará la IP del cliente */
 
-      send(fd2,"Bienvenido a mi servidor.\n",22,0);
+
+      //send(fd2,"Bienvenido a mi servidor.\n",256,0);
       /* que enviará el mensaje de bienvenida al cliente */
-      
+
       doprocessing(fd2);
 
    } /* end while */
 }
+
 
