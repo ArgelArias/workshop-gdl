@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/soporte/Documents/GitHub/workshop/credit-bureau/src/c/cb.c
+stdlib.h
+-
+stdio.h
+-
+string.h
+-
+sys/types.h
+-
+winsock2.h
+-
+unistd.h
+-
+
