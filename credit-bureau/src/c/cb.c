@@ -16,7 +16,7 @@
 
 void doprocessing (int sock)
 {
-    int n;
+    int n, i;
     char buffer[256];
 
     memset(&(buffer), '0', 256);
@@ -25,6 +25,14 @@ void doprocessing (int sock)
     /* Receive message from client */
     if ((recvMsgSize = recv(sock, buffer, 256, 0)) < 0)
         perror("ERROR reading to socket1");
+
+    for(i=0;i<sizeof(buffer);i++){
+        if(buffer[i] == '$'){
+            buffer[i] = '|';
+        }
+    }
+
+    //printf("%s", buffer);
 
     if(buffer[3] == '|') //checks if add a credit to the Loan file
         addcredit(buffer);

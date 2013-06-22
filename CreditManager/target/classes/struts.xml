@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+    
+    <struts>
+    	<package name="com.recluit.lab" extends="struts-default">
+    		<action name="index">
+    		<result>/index.jsp</result>
+    		</action>
+    		
+    		<action name="books" class="com.recluit.lab.action.BookAction">
+    			<result name="success">books.jsp</result>
+    			<result name="error">error.jsp</result>
+    		</action>
+    		
+    		<action name="evaluate" class="com.recluit.lab.action.OperationEvaluateAction">
+    			<result name="display">display.jsp</result>
+    			<result name="payment">payment.jsp</result>
+    			<result name="close">close.jsp</result>
+    			<result name="approved">approved.jsp</result>
+    			<result name="denied">denied.jsp</result>
+    			<result name="error">error.jsp</result>
+    			<result name="input">index.jsp</result>
+    		</action>
+    		
+    		<action name="payment" class="com.recluit.lab.action.PaymentAction">
+    			<result name="success">paymentForm.jsp</result>
+    			<result name="error">error.jsp</result>
+    		</action>
+    		
+    		<action name="makePayment" class="com.recluit.lab.action.MakePaymentAction">
+    			<result name="success">payed.jsp</result>
+    			<result name="error">error.jsp</result>
+    			<result name="input">paymentForm.jsp</result>
+    		</action>
+    		
+    		<action name="close" class="com.recluit.lab.action.CloseAction">
+    			<result name="success">closed.jsp</result>
+    			<result name="error">error.jsp</result>
+    			<result name="input">close.jsp</result>
+    		</action>
+    		
+    		<action name="new" class="com.recluit.lab.action.NewAction">
+    			<result name="success">added.jsp</result>
+    			<result name="error">error.jsp</result>
+    			<result name="input">approved.jsp</result>
+    		</action>
+    		
+    	</package>
+    </struts>
